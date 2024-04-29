@@ -4,12 +4,14 @@ class Playlist:
     def __init__(self,name):
         self.name = name
         self.head = None
+        self.duration = 0
 
     #Methods for insertion
     def insert_at_beginning(self,name,album,length):
         # Insert a new Track at the beginning of the linked list
         # Time Complexity: O(1), Auxiliary Space: O(1)
         new_track = track.Track(name,album,length)
+        self.duration+=new_track.length
 
         if not self.head:
             new_track.next = new_track
@@ -25,6 +27,7 @@ class Playlist:
         # Append a new Track at the end of the linked list
         # Time Complexity: O(1), Auxiliary Space: O(1)
         new_track = track.Track(name,album,length)
+        self.duration+=new_track.length
 
         if not self.head:
             new_track.next = new_track
@@ -46,6 +49,7 @@ class Playlist:
             return
         
         new_track = track.Track(name,album,length)
+        self.duration+=new_track.length
         current = self.head
         count = 0
         while count < pos - 1:
@@ -67,6 +71,7 @@ class Playlist:
             print(self.name," is empty!")
             return
 
+        self.duration-=self.head.length
         # If only one node in list
         if self.head.next == self.head:
             self.head = None
@@ -96,6 +101,7 @@ class Playlist:
             current = current.next
             count += 1
 
+        self.duration-=current.next.length
         current.next = current.next.next
         current.next.prev = current
 
@@ -107,9 +113,11 @@ class Playlist:
             return
 
         if self.head.next == self.head:
+            self.duration-=self.head.length
             self.head = None
             return
 
+        self.duration-=self.head.prev.length
         self.head.prev.prev.next = self.head
         self.head.prev = self.head.prev.prev
 
@@ -152,7 +160,6 @@ class Playlist:
         current.next.prev = to_move
         current.next = to_move
 
-
     def length(self):
         # Count how many tracks are in the playlist
         # Time Complexity: O(N), Auxiliary Space: O(1)
@@ -188,7 +195,15 @@ class Playlist:
                 return
             
     def clear(self):
+        # Delete all of the entires in the playlist
+        # Time Complexity: O(1), Auxiliary Space: O(1)
         self.head = None
+        self.duration = 0
+
+    def duration(self):
+        # Find the total duration of all songs in the playlist
+        # Time Complexity: O(1), Auxiliary Space: O(1)
+        return self.duration
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
@@ -207,6 +222,8 @@ if __name__ == '__main__':
     playlist.move(old_index=1,new_index=2)
     #artists1,artist4,artist2
     playlist.contents()
+
+    print("Duration:",playlist.duration,"seconds")
 
     playlist.clear()
     playlist.contents()

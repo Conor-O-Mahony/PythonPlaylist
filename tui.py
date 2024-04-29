@@ -16,6 +16,7 @@ def present_options():
     print("Type 4 to print the playlist")
     print("Type 5 to see the playlist length")
     print("Type 6 to clear the playlist")
+    print("Type 7 to see playlist duration")
 
     print("\nType 0 to exit...")
 
@@ -43,6 +44,8 @@ def primary_input_handler(user_input):
             playlist_length()
         case 6:
             clear_playlist()
+        case 7:
+            playlist_duation()
         case _:
             print("Invalid input")
             
@@ -172,6 +175,10 @@ def playlist_length():
 def clear_playlist():
     p.clear()
     print("Cleared",p.name)
+
+@tui_decorator
+def playlist_duation():
+    print(p.name,"is",p.duration(),"seconds long")
 
 if __name__ == '__main__':
     print("Welcome!")
