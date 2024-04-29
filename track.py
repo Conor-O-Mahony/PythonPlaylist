@@ -4,7 +4,10 @@ class Track:
         self.album = album
         self.length = length
 
+        #Pointer to next track
         self.next = None
+        #Pointer to previous track
+        self.prev = None
 
     def __repr__(self):
         return f"Track(name={self.name},album={self.album},length={self.length})"
