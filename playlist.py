@@ -186,6 +186,9 @@ class Playlist:
             count+=1
             if current == self.head:
                 return
+            
+    def clear(self):
+        self.head = None
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
@@ -203,4 +206,7 @@ if __name__ == '__main__':
     #print(playlist.length())
     playlist.move(old_index=1,new_index=2)
     #artists1,artist4,artist2
+    playlist.contents()
+
+    playlist.clear()
     playlist.contents()

@@ -15,6 +15,7 @@ def present_options():
     print("Type 3 to move a track")
     print("Type 4 to print the playlist")
     print("Type 5 to see the playlist length")
+    print("Type 6 to clear the playlist")
 
     print("\nType 0 to exit...")
 
@@ -40,6 +41,8 @@ def primary_input_handler(user_input):
             print_playlist()
         case 5:
             playlist_length()
+        case 6:
+            clear_playlist()
         case _:
             print("Invalid input")
             
@@ -164,6 +167,11 @@ def playlist_length():
     len = p.length()
     if len>0:
         print(p.name,"is",p.length(),"songs long")
+
+@tui_decorator
+def clear_playlist():
+    p.clear()
+    print("Cleared",p.name)
 
 if __name__ == '__main__':
     print("Welcome!")
