@@ -189,6 +189,69 @@ class Playlist:
             
     def clear(self):
         self.head = None
+        
+    def sort_by_album(self):
+        #Sort the playlist by album titles in descending alphabetical order
+        if not self.head or not self.head.next:
+            print(self.name," is empty!")
+            return
+
+        #Bubble sort algorithm to sort tracks by album title
+        swapped = True
+        while swapped:
+            swapped = False
+            current = self.head
+            while current.next != self.head:
+                next_track = current.next
+                if current.album > next_track.album:
+                    #Swap all track features to replace them
+                    current.name, next_track.name = next_track.name, current.name
+                    current.album, next_track.album = next_track.album, current.album
+                    current.length, next_track.length = next_track.length, current.length
+                    swapped = True
+                current = current.next
+                
+    def sort_by_artist(self):
+        #Sort the playlist by album titles in descending alphabetical order
+        if not self.head or not self.head.next:
+            print(self.name," is empty!")
+            return
+
+        #Bubble sort algorithm to sort tracks by album title
+        swapped = True
+        while swapped:
+            swapped = False
+            current = self.head
+            while current.next != self.head:
+                next_track = current.next
+                if current.name > next_track.name:
+                    #Swap all track features to replace them
+                    current.name, next_track.name = next_track.name, current.name
+                    current.album, next_track.album = next_track.album, current.album
+                    current.length, next_track.length = next_track.length, current.length
+                    swapped = True
+                current = current.next
+                
+    def sort_by_length(self):
+        #Sort the playlist by album titles in descending alphabetical order
+        if not self.head or not self.head.next:
+            print(self.name," is empty!")
+            return
+
+        #Bubble sort algorithm to sort tracks by album title
+        swapped = True
+        while swapped:
+            swapped = False
+            current = self.head
+            while current.next != self.head:
+                next_track = current.next
+                if current.length > next_track.length:
+                    #Swap all track features to replace them
+                    current.name, next_track.name = next_track.name, current.name
+                    current.album, next_track.album = next_track.album, current.album
+                    current.length, next_track.length = next_track.length, current.length
+                    swapped = True
+                current = current.next
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
@@ -199,14 +262,15 @@ if __name__ == '__main__':
     #artist1,artist2,artist3,artist4
     #playlist.contents()
 
-    playlist.delete_at_index(2)
+    #playlist.delete_at_index(2)
     #artist1,artist2,artist4
     #playlist.contents()
 
     #print(playlist.length())
-    playlist.move(old_index=1,new_index=2)
+    #playlist.move(old_index=1,new_index=2)
     #artists1,artist4,artist2
     playlist.contents()
 
-    playlist.clear()
+    #playlist.clear()
+    playlist.sort_by_length()
     playlist.contents()
