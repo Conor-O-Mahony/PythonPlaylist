@@ -121,6 +121,9 @@ class Playlist:
             return
         if old_index == new_index:
             return
+        if old_index<0 or new_index<0:
+            print("Invalid index")
+            return
         
         current = self.head
         count = 0
