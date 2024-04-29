@@ -229,14 +229,14 @@ class Playlist:
                 current = current.next
                 
     def sort_by_artist(self):
-        #Sort the playlist by album titles in descending alphabetical order
+        #Sort the playlist by song name in descending alphabetical order
         if not self.head:
             print(self.name," is empty!")
             return
         if not self.head.next == self.head:
             return
 
-        #Bubble sort algorithm to sort tracks by album title
+        #Bubble sort algorithm to sort tracks by song name
         swapped = True
         while swapped:
             swapped = False
@@ -252,14 +252,14 @@ class Playlist:
                 current = current.next
                 
     def sort_by_length(self):
-        #Sort the playlist by album titles in descending alphabetical order
+        #Sort the playlist by length in descending alphabetical order
         if not self.head:
             print(self.name," is empty!")
             return
         if not self.head.next == self.head:
             return
 
-        #Bubble sort algorithm to sort tracks by album title
+        #Bubble sort algorithm to sort tracks by length
         swapped = True
         while swapped:
             swapped = False
@@ -273,6 +273,14 @@ class Playlist:
                     current.length, next_track.length = next_track.length, current.length
                     swapped = True
                 current = current.next
+                
+    def now_playing(self):
+        if not self.head:
+            print(self.name, " is empty!")
+            return
+        current = self.head
+        print("Now Playing:", current.name, "from the album", current.album)
+        print("             Remaining track time is:", current.length, "seconds.")
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
@@ -306,3 +314,4 @@ if __name__ == '__main__':
 
     playlist.sort_by_album()
     playlist.contents()
+    playlist.now_playing()
