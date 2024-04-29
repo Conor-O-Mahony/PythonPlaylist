@@ -17,6 +17,7 @@ def present_options():
     print("Type 5 to see the playlist length")
     print("Type 6 to clear the playlist")
     print("Type 7 to see playlist duration")
+    print("Type 8 to sort the playlist")
 
     print("\nType 0 to exit...")
 
@@ -46,6 +47,8 @@ def primary_input_handler(user_input):
             clear_playlist()
         case 7:
             playlist_duation()
+        case 8:
+            sort_options()
         case _:
             print("Invalid input")
             
@@ -180,6 +183,34 @@ def clear_playlist():
 def playlist_duation():
     print(p.name,"is",p.duration(),"seconds long")
 
+@tui_decorator
+def sort_options():
+    print("Type 1 to sort by song length")
+    print("Type 2 to sort by artist")
+    print("Type 3 to sort by album")
+
+    print("\nType 0 to exit...")
+
+    try:
+        user_input = int(input("Enter your choice: "))
+    except:
+        print("Invalid input")
+        return
+
+    match user_input:
+        case 0:
+            return
+        case 1:
+            p.sort_by_length()
+        case 2:
+            p.sort_by_artist()
+        case 3:
+            p.sort_by_album()
+        case _:
+            print("Invalid input")
+
+    print_playlist()
+        
 if __name__ == '__main__':
     print("Welcome!")
     print("====================================\n")
