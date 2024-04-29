@@ -1,10 +1,10 @@
 import playlist
 
 def tui_decorator(func):  
-    def inner():  
-        print("====================================\n")   
-        func()  
-        print("\n====================================")  
+    def inner(*args,**kwargs):  
+        print("\n====================================\n")   
+        func(*args,**kwargs)  
+        #print("\n====================================")  
             
     return inner
 
@@ -82,7 +82,8 @@ def insertion_options():
                 return
         case _:
             print("Invalid input")
-        
+
+@tui_decorator        
 def insertion(where):
     name = str(input("Input the song name: "))
     album = str(input("Input the album name: "))
@@ -133,6 +134,7 @@ def deletion_options():
         case _:
             print("Invalid input")
 
+@tui_decorator
 def deletion(where):
     if where=="start":
         try:
@@ -213,13 +215,15 @@ def sort_options():
         
 if __name__ == '__main__':
     print("Welcome!")
-    print("====================================\n")
+    print("\n====================================\n")
 
     playlist_name = str(input("Name your playlist: "))
     p = playlist.Playlist(playlist_name)
 
     while True:
         present_options()
+
+        print("\n====================================\n")
     
         inp = input("Press 0 to exit, or any other key to continue... -> ")
 

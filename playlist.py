@@ -188,11 +188,11 @@ class Playlist:
             print("Track",count,"->",current)
             print("Next track ->",current.next)
             print("Previous track ->",current.prev)
-            print()
             current = current.next
             count+=1
             if current == self.head:
                 return
+            print()
             
     def clear(self):
         # Delete all of the entires in the playlist
