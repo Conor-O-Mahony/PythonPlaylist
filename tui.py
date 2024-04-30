@@ -183,7 +183,7 @@ def clear_playlist():
 
 @tui_decorator
 def playlist_duation():
-    print(p.name,"is",p.duration(),"seconds long")
+    print(p.name,"is",p.duration,"seconds long")
 
 @tui_decorator
 def sort_options():

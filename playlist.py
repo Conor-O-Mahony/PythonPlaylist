@@ -1,4 +1,5 @@
 import track
+import random
 
 class Playlist:
     def __init__(self,name):
@@ -200,17 +201,17 @@ class Playlist:
         self.head = None
         self.duration = 0
 
-    def duration(self):
-        # Find the total duration of all songs in the playlist
-        # Time Complexity: O(1), Auxiliary Space: O(1)
-        return self.duration
+    #def duration(self):
+    #    # Find the total duration of all songs in the playlist
+    #    # Time Complexity: O(1), Auxiliary Space: O(1)
+    #    return self.duration
         
     def sort_by_album(self):
         #Sort the playlist by album titles in descending alphabetical order
         if not self.head:
             print(self.name," is empty!")
             return
-        if not self.head.next == self.head:
+        if self.head.next == self.head:
             return
 
         #Bubble sort algorithm to sort tracks by album title
@@ -233,7 +234,7 @@ class Playlist:
         if not self.head:
             print(self.name," is empty!")
             return
-        if not self.head.next == self.head:
+        if self.head.next == self.head:
             return
 
         #Bubble sort algorithm to sort tracks by song name
@@ -282,6 +283,78 @@ class Playlist:
         print("Now Playing:", current.name, "from the album", current.album)
         print("             Remaining track time is:", current.length, "seconds.")
 
+    def old_shuffle(self):
+        # Fisher-Yates-like Shuffle Algorithm for Circular Doubly Linked list
+        # Time Complexity: O(N^2), Auxiliary Space: O(1)
+        """Fisher-Yates-Shuffle(A):
+            n = length of array A
+            for i from n - 1 down to 1:
+            j = random integer such that 0 <= j <= i
+            swap A[i] and A[j]"""
+        if not self.head:
+            print(self.name," is empty!")
+            return
+        #Can't shuffle 1 item playlist
+        if self.head.next == self.head:
+            return
+        
+        len = self.length()
+        jth = self.head
+        ith = self.head.prev
+        for i in range(len - 1, 0, -1):
+            # Generate a random index within the remaining elements
+            j = random.randint(0, i)
+
+            # Move current to the jth node
+            count = 0
+            while count < j:
+                jth = jth.next
+                count+=1
+
+            # Swap values of ith and jth
+            ith.name, jth.name = jth.name, ith.name
+            ith.album, jth.album = jth.album, ith.album
+            ith.length, jth.length = jth.length, ith.length
+
+            # Move ith back one and jth back to head
+            ith = ith.prev
+            jth = self.head
+    
+    def shuffle(self):
+        # Fisher-Yates Shuffle Algorithm: Convert linked list to array, shuffle, convert back
+        # Time Complexity: O(N), Auxiliary Space: O(N) -> Have to create new array
+        if not self.head:
+            print(self.name," is empty!")
+            return
+        #Can't shuffle 1 item playlist
+        if self.head.next == self.head:
+            return
+
+        # Add all of the tracks to an array
+        tracks = []
+        current = self.head
+        while True:
+            tracks.append(current)
+            current = current.next
+            if current == self.head:
+                break
+
+        n = len(tracks)
+        # Shuffle the track. random.shuffle uses Fisher-Yates 
+        for i in range(n-1,0,-1):
+            # random.randint uses Mersenne Twister which is O(1) (https://stackoverflow.com/questions/25651532/what-is-the-time-complexity-of-the-mersenne-twister)
+            j = random.randint(0,i+1)
+    
+            # Swap arr[i] with the element at random index
+            tracks[i],tracks[j] = tracks[j],tracks[i]
+
+        # Convert back to circular doubly linked list
+        self.head = tracks[0]
+        for i in range(n):
+            #prev_index = (i - 1) % n if i != 0 else n - 1
+            tracks[i].prev = tracks[i-1]
+            tracks[i].next = tracks[(i + 1) % n]
+
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
     playlist.insert_at_beginning("artist1","album1",120)
@@ -315,3 +388,6 @@ if __name__ == '__main__':
     playlist.sort_by_album()
     playlist.contents()
     playlist.now_playing()
+    print("---------------------------")
+    playlist.shuffle()
+    playlist.contents()
