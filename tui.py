@@ -18,6 +18,7 @@ def present_options():
     print("Type 6 to clear the playlist")
     print("Type 7 to see playlist duration")
     print("Type 8 to sort the playlist")
+    print("Type 9 to shuffle the playlist")
 
     print("\nType 0 to exit...")
 
@@ -49,6 +50,8 @@ def primary_input_handler(user_input):
             playlist_duation()
         case 8:
             sort_options()
+        case 9:
+            shuffle_playlist()
         case _:
             print("Invalid input")
             
@@ -210,6 +213,13 @@ def sort_options():
             p.sort_by_album()
         case _:
             print("Invalid input")
+
+    print_playlist()
+
+@tui_decorator
+def shuffle_playlist():
+    p.shuffle()
+    print("Shuffled!")
 
     print_playlist()
         
