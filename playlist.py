@@ -241,31 +241,56 @@ class Playlist:
         # If second linked list is empty 
         if second is None:
             return first
-
-        # Pick the smaller value
-        if first.album < second.album:
-            first.next = self.merge(first.next, second)
-            first.next.prev = first
-            first.prev = None
-            return first
-        else:
-            second.next = self.merge(first, second.next)
-            second.next.prev = second
-            second.prev = None
-            return second
+        
+        if sort_mode == 0: #album sort
+            # Pick the smaller value
+            if first.album < second.album:
+                first.next = self.merge(first.next, second)
+                first.next.prev = first
+                first.prev = None
+                return first
+            else:
+                second.next = self.merge(first, second.next)
+                second.next.prev = second
+                second.prev = None
+                return second
+            
+        elif sort_mode == 1: #name sort
+            if first.name < second.nane:
+                first.next = self.merge(first.next, second)
+                first.next.prev = first
+                first.prev = None
+                return first
+            else:
+                second.next = self.merge(first, second.next)
+                second.next.prev = second
+                second.prev = None
+                return second
+            
+        elif sort_mode == 2: #length sort
+            if first.length < second.length:
+                first.next = self.merge(first.next, second)
+                first.next.prev = first
+                first.prev = None
+                return first
+            else:
+                second.next = self.merge(first, second.next)
+                second.next.prev = second
+                second.prev = None
+                return second
 
         # Function to do merge sort
     def mergeSort(self, tempHead):
-        print("test")
+        #print("test")
         if tempHead is None: 
-            print("test2")
+            #print("test2")
             return tempHead
         if tempHead.next is None:
-            print("test3")
+            #print("test3")
             return tempHead
-        print("test4")
+        #print("test4")
         second = self.split(tempHead)
-        print("test5")
+        #print("test5")
             
         # Recur for left and right halves
         tempHead = self.mergeSort(tempHead)
@@ -369,11 +394,11 @@ class Playlist:
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
-    playlist.insert_at_beginning("artist3","album3",120)
-    playlist.insert_at_end("artist1","album1",100)
-    playlist.insert_at_index(1,"artist2","album2",210)
-    playlist.insert_at_index(3,"artist5","album5",40)
-    playlist.insert_at_end("artist4","album4",13)
+    playlist.insert_at_beginning("Eleanor Rigby","Revolver",120)
+    playlist.insert_at_end("Love Me Do","Please Please Me",100)
+    playlist.insert_at_index(1,"Girl","Rubber Soul",210)
+    playlist.insert_at_index(3,"Help!","Help!",40)
+    playlist.insert_at_end("Something","Abbey Road",13)
     #artist1,artist2,artist3,artist4
     #playlist.contents()
     #print(playlist.traverse(0))
@@ -403,9 +428,11 @@ if __name__ == '__main__':
     #playlist.sort_by_artist()
     #playlist.contents()
     #print("---------------------------")
-
+    sort_mode = 0 #album
+    #sort_mode = 1 #name
+    #sort_mode = 2 #length
     playlist.sort()
-    playlist.head = playlist.mergeSort(playlist.head)
+    #playlist.head = playlist.mergeSort(playlist.head)
     #playlist.mergeSort(playlist.head)
     playlist.contents()
     
