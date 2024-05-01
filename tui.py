@@ -1,4 +1,4 @@
-import playlist
+from playlist import Playlist
 
 def tui_decorator(func):  
     def inner(*args,**kwargs):  
@@ -218,9 +218,9 @@ def sort_options():
 
 @tui_decorator
 def shuffle_playlist():
+    print("Shuffling!")
     p.shuffle()
-    print("Shuffled!")
-
+    
     print_playlist()
         
 if __name__ == '__main__':
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     print("\n====================================\n")
 
     playlist_name = str(input("Name your playlist: "))
-    p = playlist.Playlist(playlist_name)
+    p = Playlist(playlist_name)
 
     while True:
         present_options()
