@@ -226,6 +226,15 @@ def shuffle_playlist():
     p.shuffle()
     
     print_playlist()
+    
+
+@tui_decorator
+def previous_track():
+    p.previous_track()
+
+@tui_decorator
+def next_track():
+    p.next_track()
         
 if __name__ == '__main__':
     print("Welcome!")
@@ -244,10 +253,4 @@ if __name__ == '__main__':
         if inp == "0":
             break
 
-    @tui_decorator
-    def previous_track():
-        p.previous_track()
 
-    @tui_decorator
-    def next_track():
-        p.next_track()
