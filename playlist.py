@@ -138,6 +138,9 @@ class Playlist:
     def move(self,old_index,new_index):
         #Move track from old index to new index
         # Time Complexity: O(N), Auxiliary Space: O(1)
+        #Future consideration: It possible that the new and old index are close and so we don't have to traverse
+        #from head to index both times. In this case, traverse to the closest index first, then from there to the
+        #new index.
         if not self.head:
             print(self.name,"is empty!")
             return
