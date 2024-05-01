@@ -194,7 +194,7 @@ class Playlist:
         if not self.head:
             print(self.name,"is empty")
             return
-        
+
         current = self.head
         count=0
         while True:
@@ -214,74 +214,105 @@ class Playlist:
         self.duration = 0
         self.length = 0
         
-    def sort_by_album(self):
-        #Sort the playlist by album titles in descending alphabetical order
-        if not self.head:
-            print(self.name," is empty!")
-            return
-        if self.head.next == self.head:
-            return
+    def sort(self):
+        self.head.prev.next = None
+        self.head.prev = None
+        
+        self.head = self.mergeSort(self.head)
+        count = 0
+        
+        end= self.head
+        while count<self.length-1:
+            end= end.next
+            count+=1
+        end.next = self.head
+        self.head.prev = end
+        
+    # Function to merge two linked list
+    def merge(self, first, second):
+            
+        # If first linked list is empty
+        if first is None:
+            return second 
+            
+        # If second linked list is empty 
+        if second is None:
+            return first
+        
+        if sort_mode == 0: #album sort
+            # Pick the smaller value
+            if first.album < second.album:
+                first.next = self.merge(first.next, second)
+                first.next.prev = first
+                first.prev = None
+                return first
+            else:
+                second.next = self.merge(first, second.next)
+                second.next.prev = second
+                second.prev = None
+                return second
+            
+        elif sort_mode == 1: #name sort
+            if first.name < second.nane:
+                first.next = self.merge(first.next, second)
+                first.next.prev = first
+                first.prev = None
+                return first
+            else:
+                second.next = self.merge(first, second.next)
+                second.next.prev = second
+                second.prev = None
+                return second
+            
+        elif sort_mode == 2: #length sort
+            if first.length < second.length:
+                first.next = self.merge(first.next, second)
+                first.next.prev = first
+                first.prev = None
+                return first
+            else:
+                second.next = self.merge(first, second.next)
+                second.next.prev = second
+                second.prev = None
+                return second
 
-        #Bubble sort algorithm to sort tracks by album title
-        swapped = True
-        while swapped:
-            swapped = False
-            current = self.head
-            while current.next != self.head:
-                next_track = current.next
-                if current.album > next_track.album:
-                    #Swap all track features to replace them
-                    current.name, next_track.name = next_track.name, current.name
-                    current.album, next_track.album = next_track.album, current.album
-                    current.length, next_track.length = next_track.length, current.length
-                    swapped = True
-                current = current.next
+        # Function to do merge sort
+    def mergeSort(self, tempHead):
+        #print("test")
+        if tempHead is None: 
+            #print("test2")
+            return tempHead
+        if tempHead.next is None:
+            #print("test3")
+            return tempHead
+        #print("test4")
+        second = self.split(tempHead)
+        #print("test5")
+            
+        # Recur for left and right halves
+        tempHead = self.mergeSort(tempHead)
+        print(tempHead)
+        second = self.mergeSort(second)
+        print(second)
+
+        # Merge the two sorted halves
+        return self.merge(tempHead, second)
+
+    # Split the doubly linked list (DLL) into two DLLs
+    # of half sizes
+    def split(self, tempHead):
+        fast = slow = tempHead
+        while(True):
+            if fast.next is None or fast.next == tempHead:
+                break
+            if fast.next.next is None or fast.next == tempHead:
+                break
+            fast = fast.next.next
+            slow = slow.next
                 
-    def sort_by_artist(self):
-        #Sort the playlist by song name in descending alphabetical order
-        if not self.head:
-            print(self.name," is empty!")
-            return
-        if self.head.next == self.head:
-            return
-
-        #Bubble sort algorithm to sort tracks by song name
-        swapped = True
-        while swapped:
-            swapped = False
-            current = self.head
-            while current.next != self.head:
-                next_track = current.next
-                if current.name > next_track.name:
-                    #Swap all track features to replace them
-                    current.name, next_track.name = next_track.name, current.name
-                    current.album, next_track.album = next_track.album, current.album
-                    current.length, next_track.length = next_track.length, current.length
-                    swapped = True
-                current = current.next
-                
-    def sort_by_length(self):
-        #Sort the playlist by length in descending alphabetical order
-        if not self.head:
-            print(self.name," is empty!")
-            return
-        if not self.head.next == self.head:
-            return
-
-        #Bubble sort algorithm to sort tracks by length
-        swapped = True
-        while swapped:
-            swapped = False
-            current = self.head
-            while current.next != self.head:
-                next_track = current.next
-                if current.length > next_track.length:
-                    #Swap all track features to replace them
-                    current.name, next_track.name = next_track.name, current.name
-                    current.album, next_track.album = next_track.album, current.album
-                    current.length, next_track.length = next_track.length, current.length
-                    swapped = True
-                current = current.next
+        temp = slow.next
+        slow.next = None
+        return temp
                 
     def now_playing(self):
         if not self.head:
@@ -357,21 +388,39 @@ class Playlist:
             #prev_index = (i - 1) % n if i != 0 else n - 1
             tracks[i].prev = tracks[i-1]
             tracks[i].next = tracks[(i + 1) % n]
+            
+    def next_track(self):
+        if not self.head:
+            print(self.name, " is empty!")
+        current = self.head
+        nxt_trk = current.next
+        self.head = nxt_trk
+        
+        print("Moving to next:", nxt_trk.name)
+        
+    def previous_track(self):
+        if not self.head:
+            print(self.name, " is empty!")
+        current = self.head
+        prv_trk = current.prev
+        self.head = prv_trk
+        
+        print("Moving to previous:", prv_trk.name)
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
-    playlist.insert_at_beginning("artist1","album1",120)
-    playlist.insert_at_end("artist3","album3",100)
-    playlist.insert_at_index(1,"artist2","album2",210)
-    playlist.insert_at_index(3,"artist4","album4",40)
-    playlist.insert_at_end("artist5","album5",13)
+    playlist.insert_at_beginning("Eleanor Rigby","Revolver",120)
+    playlist.insert_at_end("Love Me Do","Please Please Me",100)
+    playlist.insert_at_index(1,"Girl","Rubber Soul",210)
+    playlist.insert_at_index(3,"Help!","Help!",40)
+    playlist.insert_at_end("Something","Abbey Road",13)
     #artist1,artist2,artist3,artist4
     #playlist.contents()
-    print(playlist.traverse(0))
-    print(playlist.traverse(1))
-    print(playlist.traverse(2))
-    print(playlist.traverse(3))
-    print(playlist.traverse(4))
+    #print(playlist.traverse(0))
+    #print(playlist.traverse(1))
+    #print(playlist.traverse(2))
+    #print(playlist.traverse(3))
+    #print(playlist.traverse(4))
 
     #playlist.delete_at_index(2)
     #artist1,artist2,artist4
@@ -379,9 +428,9 @@ if __name__ == '__main__':
 
     print("--------------------------")
     #print(playlist.length)
-    playlist.move(old_index=3,new_index=1)
+    #playlist.move(old_index=3,new_index=1)
     #artists1,artist4,artist2
-    playlist.contents()
+    #playlist.contents()
 
     #print("Duration:",playlist.duration,"seconds")
 
@@ -394,9 +443,22 @@ if __name__ == '__main__':
     #playlist.sort_by_artist()
     #playlist.contents()
     #print("---------------------------")
-
-    #playlist.sort_by_album()
-    #playlist.contents()
+    sort_mode = 0 #album
+    #sort_mode = 1 #name
+    #sort_mode = 2 #length
+    playlist.sort()
+    #playlist.head = playlist.mergeSort(playlist.head)
+    #playlist.mergeSort(playlist.head)
+    playlist.contents()
+    print()
+    playlist.now_playing()
+    playlist.next_track()
+    playlist.now_playing()
+    print()
+    playlist.contents()
+    playlist.previous_track()
+    playlist.now_playing()
+    
     #playlist.now_playing()
     #print("---------------------------")
     #playlist.shuffle()

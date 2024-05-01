@@ -19,6 +19,8 @@ def present_options():
     print("Type 7 to see playlist duration")
     print("Type 8 to sort the playlist")
     print("Type 9 to shuffle the playlist")
+    print("Type 11 to go to the previous track")
+    print("Type 12 to go to the next track")
 
     print("\nType 0 to exit...")
 
@@ -52,6 +54,10 @@ def primary_input_handler(user_input):
             sort_options()
         case 9:
             shuffle_playlist()
+        case 11:
+            previous_track()
+        case 12:
+            next_track()
         case _:
             print("Invalid input")
             
@@ -220,6 +226,15 @@ def shuffle_playlist():
     p.shuffle()
     
     print_playlist()
+    
+
+@tui_decorator
+def previous_track():
+    p.previous_track()
+
+@tui_decorator
+def next_track():
+    p.next_track()
         
 if __name__ == '__main__':
     print("Welcome!")
@@ -238,5 +253,4 @@ if __name__ == '__main__':
         if inp == "0":
             break
 
-        
 
