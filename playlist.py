@@ -225,11 +225,8 @@ class Playlist:
         while count<self.length-1:
             end= end.next
             count+=1
-        print("End node:", end)
         end.next = self.head
         self.head.prev = end
-        print("Head node:", self.head)
-        print("end node:", end)
         
     # Function to merge two linked list
     def merge(self, first, second):
@@ -391,6 +388,24 @@ class Playlist:
             #prev_index = (i - 1) % n if i != 0 else n - 1
             tracks[i].prev = tracks[i-1]
             tracks[i].next = tracks[(i + 1) % n]
+            
+    def next_track(self):
+        if not self.head:
+            print(self.name, " is empty!")
+        current = self.head
+        nxt_trk = current.next
+        self.head = nxt_trk
+        
+        print("Moving to next:", nxt_trk.name)
+        
+    def previous_track(self):
+        if not self.head:
+            print(self.name, " is empty!")
+        current = self.head
+        prv_trk = current.prev
+        self.head = prv_trk
+        
+        print("Moving to previous:", prv_trk.name)
 
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
@@ -435,6 +450,14 @@ if __name__ == '__main__':
     #playlist.head = playlist.mergeSort(playlist.head)
     #playlist.mergeSort(playlist.head)
     playlist.contents()
+    print()
+    playlist.now_playing()
+    playlist.next_track()
+    playlist.now_playing()
+    print()
+    playlist.contents()
+    playlist.previous_track()
+    playlist.now_playing()
     
     #playlist.now_playing()
     #print("---------------------------")
