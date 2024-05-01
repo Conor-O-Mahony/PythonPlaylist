@@ -307,17 +307,13 @@ class Playlist:
             return
         
         len = self.length
-        jth = self.head
         ith = self.head.prev
         for i in range(len - 1, 0, -1):
             # Generate a random index within the remaining elements
             j = randint(0, i)
 
-            # Move current to the jth node
-            count = 0
-            while count < j:
-                jth = jth.next
-                count+=1
+            # Move to the jth node
+            jth = self.traverse(j)
 
             # Swap values of ith and jth
             ith.name, jth.name = jth.name, ith.name
@@ -326,7 +322,6 @@ class Playlist:
 
             # Move ith back one and jth back to head
             ith = ith.prev
-            jth = self.head
     
     def shuffle(self):
         # Fisher-Yates Shuffle Algorithm: Convert linked list to array, shuffle, convert back
