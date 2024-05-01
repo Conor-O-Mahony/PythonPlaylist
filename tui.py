@@ -175,9 +175,7 @@ def print_playlist():
 
 @tui_decorator
 def playlist_length():
-    len = p.length()
-    if len>0:
-        print(p.name,"is",p.length(),"songs long")
+    print(p.name,"is",p.length,"songs long")
 
 @tui_decorator
 def clear_playlist():

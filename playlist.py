@@ -383,7 +383,7 @@ if __name__ == '__main__':
     #playlist.contents()
 
     print("--------------------------")
-    #print(playlist.length())
+    #print(playlist.length)
     playlist.move(old_index=3,new_index=1)
     #artists1,artist4,artist2
     playlist.contents()
