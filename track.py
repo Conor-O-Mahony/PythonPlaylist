@@ -9,6 +9,18 @@ class Track:
         #Pointer to previous track
         self.prev = None
 
+    def compare_attributes(obj1, obj2, attr):
+        if getattr(obj1, attr) < getattr(obj2, attr):
+            return True
+        return False
+        
+    def attribute_exists(obj, attr):
+         try:
+              getattr(obj, attr)
+              return True
+         except:
+              return False
+
     def __repr__(self):
         return f"Track(name={self.name},album={self.album},length={self.length})"
         

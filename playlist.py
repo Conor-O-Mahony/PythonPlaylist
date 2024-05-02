@@ -10,7 +10,7 @@ class Playlist:
 
     def traverse(self,i):
         # Efficient traversal to index i. Takes advantage of circularity and doubly linked nature
-        # Time Complexity: O(min(i,N-i)), Auxiliary Space: O(1)
+        # Time Complexity: O(min(i,N-i)), Space Complexity: O(1)
         count = 0
         if i>(self.length//2):
             current = self.head.prev
@@ -28,7 +28,7 @@ class Playlist:
     #Methods for insertion
     def insert_at_beginning(self,name,album,length):
         # Insert a new Track at the beginning of the linked list
-        # Time Complexity: O(1), Auxiliary Space: O(1)
+        # Time Complexity: O(1), Space Complexity: O(1)
         new_track = Track(name,album,length)
         self.duration+=new_track.length
         self.length+=1
@@ -45,13 +45,13 @@ class Playlist:
 
     def insert_at_end(self,name,album,length):
         # Append a new Track at the end of the linked list. Can use insert_at_beginning, then move head forward 1
-        # Time Complexity: O(1), Auxiliary Space: O(1)
+        # Time Complexity: O(1), Space Complexity: O(1)
         self.insert_at_beginning(name,album,length)
         self.head = self.head.next
 
     def insert_at_index(self,pos,name,album,length):
         # Insert a new track at the specified positive index
-        # Time Complexity: O(min(i,N-i)), Auxiliary Space: O(1)
+        # Time Complexity: O(min(i,N-i)), Space Complexity: O(1)
         if pos < 0 or pos > self.length:
             print("Invalid position")
             return
@@ -78,7 +78,7 @@ class Playlist:
     #Methods for deletion
     def delete_at_beginning(self):
         #Delete track from beginning of the playlist
-        # Time Complexity: O(1), Auxiliary Space: O(1)
+        # Time Complexity: O(1), Space Complexity: O(1)
         if not self.head:
             print(self.name," is empty!")
             return
@@ -95,7 +95,7 @@ class Playlist:
 
     def delete_at_index(self, pos):
         #Delete track at the specified pos
-        # Time Complexity: O(N), Auxiliary Space: O(1)
+        # Time Complexity: O(N), Space Complexity: O(1)
         if pos == 0:
             self.delete_at_beginning()
             return
@@ -121,7 +121,7 @@ class Playlist:
 
     def delete_at_end(self):
         #Delete track from end of playlist
-        # Time Complexity: O(1), Auxiliary Space: O(1)
+        # Time Complexity: O(1), Space Complexity: O(1)
         if not self.head:
             print(self.name,"is empty!")
             return
@@ -137,7 +137,7 @@ class Playlist:
 
     def move(self,old_index,new_index):
         #Move track from old index to new index
-        # Time Complexity: O(N), Auxiliary Space: O(1)
+        # Time Complexity: O(N), Space Complexity: O(1)
         #Future consideration: It possible that the new and old index are close and so we don't have to traverse
         #from head to index both times. In this case, traverse to the closest index first, then from there to the
         #new index.
@@ -190,7 +190,7 @@ class Playlist:
 
     def contents(self):
         # Display the elements of the linked list
-        # Time Complexity: O(N), Auxiliary Space: O(1)
+        # Time Complexity: O(N), Space Complexity: O(1)
         if not self.head:
             print(self.name,"is empty")
             return
@@ -209,13 +209,19 @@ class Playlist:
             
     def clear(self):
         # Delete all of the entires in the playlist
-        # Time Complexity: O(1), Auxiliary Space: O(1)
+        # Time Complexity: O(1), Space Complexity: O(1)
         self.head = None
         self.duration = 0
         self.length = 0
         
+    #Merge Sort functions
     def sort(self,type):
-        if type != "album" and type != "name" and type != "length":
+        # Breaks the circular links => CDLL -> DLL, merge sorts, then reattaches the circular links
+        # Time Complexity: O(NlogN), Space Complexity: O(1) (No additional DSs required for DLLs!)
+        if not self.head:
+            print(self.name, " is empty!")
+            return
+        if not Track.attribute_exists(self.head,type):
             print("Invalid sort type")
             return
 
@@ -231,10 +237,9 @@ class Playlist:
             count+=1
         end.next = self.head
         self.head.prev = end
-        
-    # Function to merge two linked list
-    def merge(self, first, second, type):
-            
+
+    def merge(self, first, second, type):  
+        # Function to merge two linked list. Part of merge sort
         # If first linked list is empty
         if first is None:
             return second 
@@ -244,14 +249,7 @@ class Playlist:
             return first
         
         # Pick the smaller value
-        if type=="name":
-            comparison = first.name < second.name
-        elif type=="album":
-            comparison = first.album < second.album
-        else:
-            comparison = first.length < second.length
-
-        if comparison:
+        if Track.compare_attributes(first,second,type):
             first.next = self.merge(first.next, second, type)
             first.next.prev = first
             first.prev = None
@@ -262,8 +260,8 @@ class Playlist:
             second.prev = None
             return second
 
-        # Function to do merge sort
     def mergeSort(self, tempHead, type):
+        # Function to do merge sort
         if tempHead is None: 
             return tempHead
         if tempHead.next is None:
@@ -278,9 +276,8 @@ class Playlist:
         # Merge the two sorted halves
         return self.merge(tempHead, second, type)
 
-    # Split the doubly linked list (DLL) into two DLLs
-    # of half sizes
     def split(self, tempHead):
+        # Split the DLL into two DLLs of half sizes
         fast = slow = tempHead
         while(True):
             if fast.next is None or fast.next == tempHead:
@@ -295,6 +292,8 @@ class Playlist:
         return temp
                 
     def now_playing(self):
+        # Displays info about the track currently playing
+        # Time Complexity: O(1), Space Complexity: O(1)
         if not self.head:
             print(self.name, " is empty!")
             return
@@ -304,7 +303,7 @@ class Playlist:
 
     def old_shuffle(self):
         # Fisher-Yates-like Shuffle Algorithm for Circular Doubly Linked list
-        # Time Complexity: O(N^2), Auxiliary Space: O(1)
+        # Time Complexity: O(N^2), Space Complexity: O(1)
         """Fisher-Yates-Shuffle(A):
             n = length of array A
             for i from n - 1 down to 1:
@@ -336,7 +335,7 @@ class Playlist:
     
     def shuffle(self):
         # Fisher-Yates Shuffle Algorithm: Convert linked list to array, shuffle, convert back
-        # Time Complexity: O(N), Auxiliary Space: O(N) -> Have to create new array
+        # Time Complexity: O(N), Space Complexity: O(N) -> Have to create new array
         if not self.head:
             print(self.name," is empty!")
             return
@@ -370,6 +369,8 @@ class Playlist:
             tracks[i].next = tracks[(i + 1) % n]
             
     def next_track(self):
+        # Displays info about the next track
+        # Time Complexity: O(1), Space Complexity: O(1)
         if not self.head:
             print(self.name, " is empty!")
         current = self.head
@@ -379,6 +380,8 @@ class Playlist:
         print("Moving to next:", nxt_trk.name)
         
     def previous_track(self):
+        # Displays info about the previous track
+        # Time Complexity: O(1), Space Complexity: O(1)
         if not self.head:
             print(self.name, " is empty!")
         current = self.head
@@ -387,19 +390,25 @@ class Playlist:
         
         print("Moving to previous:", prv_trk.name)
     
-    def song_search(self, song_name):
-        Track.name = song_name
+    def search(self, type, variable):
+        # Searches for an instance of a particular Track attribute in the CDLL
+        # Time Complexity: O(N), Space Complexity: O(1)
         if not self.head:
             print("Playlist", self.name, "is currently empty")
+            return -1
+
+        if not Track.attribute_exists(self.head,type):
+            print("Invalid attribute")
             return -1
         
         current = self.head
         track = 0
+        found=False
 
         while True:
-            if current.name == song_name:
-                print(song_name, "found: Track", track + 1, "of", self.length)
-                return track
+            if getattr(current, type) == variable:
+                print(variable, "found: Track", track + 1, "of", self.length)
+                found=True
             
             track += 1
             current = current.next
@@ -407,7 +416,9 @@ class Playlist:
             if current == self.head:
                 break
 
-        print(song_name, "is not available in playlist", self.name)
+        if found:
+            return 0
+        print(variable, "is not available in playlist", self.name)
         return -1
 
     def album_search(self, album_name):
@@ -493,14 +504,16 @@ class Playlist:
     #playlist.now_playing()
     #print("---------------------------")
     #playlist.shuffle()
-    #playlist.contents()"""
+    #playlist.contents()
 
-a = Playlist("tom")
-b = Playlist("b")
-a.insert_at_beginning("aaa", "alala", 25)
-a.insert_at_end("bbb", "apapapaap", 30)
-a.insert_at_index(2, "ccc", "acadacad", 50)
-a.insert_at_index(1, "ddd", "alala", 60)
-a.contents()
-a.song_search("ccc")
-a.album_search("alala")
+    print("\n\n\n Tom's stuff")
+
+    a = Playlist("tom")
+    b = Playlist("b")
+    a.insert_at_beginning("aaa", "alala", 25)
+    a.insert_at_end("bbb", "apapapaap", 30)
+    a.insert_at_index(2, "ccc", "acadacad", 50)
+    a.insert_at_index(1, "ddd", "alala", 60)
+    a.contents()
+    a.search("name","ccc")
+    a.search("album","alala")"""
