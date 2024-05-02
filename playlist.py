@@ -214,11 +214,15 @@ class Playlist:
         self.duration = 0
         self.length = 0
         
-    def sort(self):
+    def sort(self,type):
+        if type != "album" and type != "name" and type != "length":
+            print("Invalid sort type")
+            return
+
         self.head.prev.next = None
         self.head.prev = None
         
-        self.head = self.mergeSort(self.head)
+        self.head = self.mergeSort(self.head,type)
         count = 0
         
         end= self.head
@@ -229,7 +233,7 @@ class Playlist:
         self.head.prev = end
         
     # Function to merge two linked list
-    def merge(self, first, second):
+    def merge(self, first, second, type):
             
         # If first linked list is empty
         if first is None:
@@ -239,64 +243,40 @@ class Playlist:
         if second is None:
             return first
         
-        if sort_mode == 0: #album sort
-            # Pick the smaller value
-            if first.album < second.album:
-                first.next = self.merge(first.next, second)
-                first.next.prev = first
-                first.prev = None
-                return first
-            else:
-                second.next = self.merge(first, second.next)
-                second.next.prev = second
-                second.prev = None
-                return second
-            
-        elif sort_mode == 1: #name sort
-            if first.name < second.nane:
-                first.next = self.merge(first.next, second)
-                first.next.prev = first
-                first.prev = None
-                return first
-            else:
-                second.next = self.merge(first, second.next)
-                second.next.prev = second
-                second.prev = None
-                return second
-            
-        elif sort_mode == 2: #length sort
-            if first.length < second.length:
-                first.next = self.merge(first.next, second)
-                first.next.prev = first
-                first.prev = None
-                return first
-            else:
-                second.next = self.merge(first, second.next)
-                second.next.prev = second
-                second.prev = None
-                return second
+        # Pick the smaller value
+        if type=="name":
+            comparison = first.name < second.name
+        elif type=="album":
+            comparison = first.album < second.album
+        else:
+            comparison = first.length < second.length
+
+        if comparison:
+            first.next = self.merge(first.next, second, type)
+            first.next.prev = first
+            first.prev = None
+            return first
+        else:
+            second.next = self.merge(first, second.next, type)
+            second.next.prev = second
+            second.prev = None
+            return second
 
         # Function to do merge sort
-    def mergeSort(self, tempHead):
-        #print("test")
+    def mergeSort(self, tempHead, type):
         if tempHead is None: 
-            #print("test2")
             return tempHead
         if tempHead.next is None:
-            #print("test3")
             return tempHead
-        #print("test4")
+
         second = self.split(tempHead)
-        #print("test5")
             
         # Recur for left and right halves
-        tempHead = self.mergeSort(tempHead)
-        print(tempHead)
-        second = self.mergeSort(second)
-        print(second)
+        tempHead = self.mergeSort(tempHead, type)
+        second = self.mergeSort(second, type)
 
         # Merge the two sorted halves
-        return self.merge(tempHead, second)
+        return self.merge(tempHead, second, type)
 
     # Split the doubly linked list (DLL) into two DLLs
     # of half sizes
@@ -443,10 +423,9 @@ if __name__ == '__main__':
     #playlist.sort_by_artist()
     #playlist.contents()
     #print("---------------------------")
-    sort_mode = 0 #album
     #sort_mode = 1 #name
     #sort_mode = 2 #length
-    playlist.sort()
+    playlist.sort("album")
     #playlist.head = playlist.mergeSort(playlist.head)
     #playlist.mergeSort(playlist.head)
     playlist.contents()
