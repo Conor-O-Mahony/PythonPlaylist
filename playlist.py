@@ -418,20 +418,26 @@ class Playlist:
         
         current = self.head
         track = 0
+        found = False
+        album_tracks = []
 
         while True:
-            if current.name == album_name:
-                print(album_name, "found: Track", track + 1, "of", self.length)
-                return track
-            
+            if current.album == album_name:
+                found = True
+                album_tracks.append(f"{current.name} Track {track + 1}")
+
             track += 1
             current = current.next
 
             if current == self.head:
                 break
 
-        print(album_name, "is not available in playlist", self.name)
-        return -1
+        if found:
+            print("Tracks from album", album_name, "available:", ", ".join(album_tracks))
+            return track - 1  # Return the last track number found
+        else:
+            print("Album", album_name, "is not available in playlist", self.name)
+            return -1
 
 """if __name__ == '__main__':
     playlist = Playlist("test_playlist")
