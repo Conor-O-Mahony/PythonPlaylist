@@ -406,8 +406,54 @@ class Playlist:
         self.head = prv_trk
         
         print("Moving to previous:", prv_trk.name)
+    
+    def song_search(self, song_name):
+        Track.name = song_name
+        if not self.head:
+            print("Playlist", self.name, "is currently empty")
+            return -1
+        
+        current = self.head
+        track = 0
 
-if __name__ == '__main__':
+        while True:
+            if current.name == song_name:
+                print(song_name, "found: Track", track + 1, "of", self.length)
+                return track
+            
+            track += 1
+            current = current.next
+
+            if current == self.head:
+                break
+
+        print(song_name, "is not available in playlist", self.name)
+        return -1
+
+    def album_search(self, album_name):
+        Track.album = album_name
+        if not self.head:
+            print("Playlist", self.name, "is currently empty")
+            return -1
+        
+        current = self.head
+        track = 0
+
+        while True:
+            if current.name == album_name:
+                print(album_name, "found: Track", track + 1, "of", self.length)
+                return track
+            
+            track += 1
+            current = current.next
+
+            if current == self.head:
+                break
+
+        print(album_name, "is not available in playlist", self.name)
+        return -1
+
+"""if __name__ == '__main__':
     playlist = Playlist("test_playlist")
     playlist.insert_at_beginning("Eleanor Rigby","Revolver",120)
     playlist.insert_at_end("Love Me Do","Please Please Me",100)
@@ -462,4 +508,14 @@ if __name__ == '__main__':
     #playlist.now_playing()
     #print("---------------------------")
     #playlist.shuffle()
-    #playlist.contents()
+    #playlist.contents()"""
+
+a = Playlist("tom")
+b = Playlist("b")
+a.insert_at_beginning("aaa", "alala", 25)
+a.insert_at_end("bbb", "apapapaap", 30)
+a.insert_at_index(2, "ccc", "acadacad", 50)
+a.insert_at_index(1, "ddd", "alala", 60)
+a.contents()
+a.song_search("ccc")
+a.album_search("alala")
