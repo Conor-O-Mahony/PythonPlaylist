@@ -417,35 +417,6 @@ class Playlist:
         print(variable, "is not available in playlist", self.name)
         return -1
 
-    def album_search(self, album_name):
-        Track.album = album_name
-        if not self.head:
-            print("Playlist", self.name, "is currently empty")
-            return -1
-        
-        current = self.head
-        track = 0
-        found = False
-        album_tracks = []
-
-        while True:
-            if current.album == album_name:
-                found = True
-                album_tracks.append(f"{current.name} Track {track + 1}")
-
-            track += 1
-            current = current.next
-
-            if current == self.head:
-                break
-
-        if found:
-            print("Tracks from album", album_name, "available:", ", ".join(album_tracks))
-            return track - 1  # Return the last track number found
-        else:
-            print("Album", album_name, "is not available in playlist", self.name)
-            return -1
-
 if __name__ == '__main__':
     playlist = Playlist("test_playlist")
     playlist.insert_at_beginning("Eleanor Rigby","Revolver",120)
