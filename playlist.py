@@ -472,15 +472,3 @@ if __name__ == '__main__':
     #print("---------------------------")
     #playlist.shuffle()
     #playlist.contents()
-
-    print("\n\n\n Tom's stuff")
-
-    a = Playlist("tom")
-    b = Playlist("b")
-    a.insert_at_beginning("aaa", "alala", 25)
-    a.insert_at_end("bbb", "apapapaap", 30)
-    a.insert_at_index(2, "ccc", "acadacad", 50)
-    a.insert_at_index(1, "ddd", "alala", 60)
-    a.contents()
-    a.search("name","ccc")
-    a.search("album","alala")
