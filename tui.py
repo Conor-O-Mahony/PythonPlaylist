@@ -214,7 +214,7 @@ def playlist_duation():
 @tui_decorator
 def sort_options():
     print("Type 1 to sort by song length")
-    print("Type 2 to sort by artist")
+    print("Type 2 to sort by song name")
     print("Type 3 to sort by album")
 
     print("\nType 0 to exit...")
@@ -229,11 +229,11 @@ def sort_options():
         case 0:
             return
         case 1:
-            p.sort_by_length()
+            p.sort("length")
         case 2:
-            p.sort_by_artist()
+            p.sort("name")
         case 3:
-            p.sort_by_album()
+            p.sort("album")
         case _:
             print("Invalid input")
 

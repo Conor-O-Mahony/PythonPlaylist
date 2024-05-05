@@ -446,7 +446,7 @@ class Playlist:
             print("Album", album_name, "is not available in playlist", self.name)
             return -1
 
-"""if __name__ == '__main__':
+if __name__ == '__main__':
     playlist = Playlist("test_playlist")
     playlist.insert_at_beginning("Eleanor Rigby","Revolver",120)
     playlist.insert_at_end("Love Me Do","Please Please Me",100)
@@ -512,4 +512,4 @@ class Playlist:
     a.insert_at_index(1, "ddd", "alala", 60)
     a.contents()
     a.search("name","ccc")
-    a.search("album","alala")"""
+    a.search("album","alala")
