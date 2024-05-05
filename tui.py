@@ -14,13 +14,12 @@ def present_options():
     print("Type 2 to delete a track")
     print("Type 3 to move a track")
     print("Type 4 to print the playlist")
-    print("Type 5 to see the playlist length")
+    print("Type 5 for playback controls")
     print("Type 6 to clear the playlist")
     print("Type 7 to see playlist duration")
     print("Type 8 to sort the playlist")
     print("Type 9 to shuffle the playlist")
-    print("Type 11 to go to the previous track")
-    print("Type 12 to go to the next track")
+    print("Type 10 to search the playlist")
 
     print("\nType 0 to exit...")
 
@@ -45,7 +44,7 @@ def primary_input_handler(user_input):
         case 4:
             print_playlist()
         case 5:
-            playlist_length()
+            playback_options()
         case 6:
             clear_playlist()
         case 7:
@@ -54,10 +53,8 @@ def primary_input_handler(user_input):
             sort_options()
         case 9:
             shuffle_playlist()
-        case 11:
-            previous_track()
-        case 12:
-            next_track()
+        case 10:
+            search_playlist()
         case _:
             print("Invalid input")
             
@@ -180,8 +177,30 @@ def print_playlist():
     p.contents()
 
 @tui_decorator
-def playlist_length():
-    print(p.name,"is",p.length,"songs long")
+def playback_options():
+    print("Type 1 to play")
+    print("Type 2 to play previous")
+    print("Type 3 to play next")
+
+    print("\nType 0 to exit...")
+
+    try:
+        user_input = int(input("Enter your choice: "))
+    except:
+        print("Invalid input")
+        return
+
+    match user_input:
+        case 0:
+            return
+        case 1:
+            p.now_playing()
+        case 2:
+            p.previous_track()
+        case 3:
+            p.next_track()
+        case _:
+            print("Invalid input")
 
 @tui_decorator
 def clear_playlist():
@@ -226,15 +245,44 @@ def shuffle_playlist():
     p.shuffle()
     
     print_playlist()
-    
 
 @tui_decorator
-def previous_track():
-    p.previous_track()
+def search_playlist():
+    print("Type 1 to search song")
+    print("Type 2 to search album")
+    print("Type 3 to search duration")
 
-@tui_decorator
-def next_track():
-    p.next_track()
+    print("\nType 0 to exit...")
+
+    try:
+        user_input = int(input("Enter your choice: "))
+    except:
+        print("Invalid input")
+        return
+
+    match user_input:
+        case 0:
+            return
+        case 1:
+            search("name")
+        case 2:
+            search("album")
+        case 3:
+            search("length")
+        case _:
+            print("Invalid input")
+
+@tui_decorator        
+def search(mode):
+    if mode=="name" or mode=="album":
+        search_term = str(input("Input the term to search: "))
+    else:
+        search_term = int(input("Input duration to search: "))
+
+    try:
+        p.search(mode,search_term)
+    except:
+        print("Invalid inputs")
         
 if __name__ == '__main__':
     print("Welcome!")
