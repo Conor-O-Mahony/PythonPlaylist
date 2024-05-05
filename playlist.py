@@ -396,10 +396,6 @@ class Playlist:
         if not self.head:
             print("Playlist", self.name, "is currently empty")
             return -1
-
-        if not Track.attribute_exists(self.head,type):
-            print("Invalid attribute")
-            return -1
         
         current = self.head
         track = 0
